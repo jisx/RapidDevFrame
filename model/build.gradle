@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.alibaba:fastjson:1.1.58.android'/*json解析*/
+    compile 'com.github.zhaokaiqiang.klog:library:1.+'/*日志*/
+    compile 'co.trikita:log:1.+'
+    compile 'org.greenrobot:eventbus:3.+'/*负责数据传递和通知*/
+}
