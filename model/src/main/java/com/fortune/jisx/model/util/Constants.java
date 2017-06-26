@@ -1,4 +1,4 @@
-package com.fortune.jisx.model.utils;
+package com.fortune.jisx.model.util;
 
 /**
  * Created by jsx on 2016/4/5.

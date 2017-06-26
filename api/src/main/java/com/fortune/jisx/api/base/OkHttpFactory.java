@@ -1,7 +1,7 @@
 package com.fortune.jisx.api.base;
 
 import com.fortune.jisx.api.base.parse.FastJsonConverterFactory;
-import com.fortune.jisx.model.utils.Constants;
+import com.fortune.jisx.model.util.Constants;
 
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -14,6 +14,7 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -35,24 +36,24 @@ public enum OkHttpFactory {
 
     public Retrofit getHttpRetrofit() {
         if (retrofitHttp == null) {
-            retrofitHttp = new Retrofit.Builder()
-                    .client(getOkHttpClient())
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(FastJsonConverterFactory.create())
-                    .build();
+            retrofitHttp = createRetrofit(getOkHttpClient());
         }
         return retrofitHttp;
     }
 
     public Retrofit getHttpsRetrofit(InputStream inputStream) throws Exception {
         if (retrofitHttps == null) {
-            retrofitHttps = new Retrofit.Builder()
-                    .client(getOkHttpsClient(inputStream))
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(FastJsonConverterFactory.create())
-                    .build();
+            retrofitHttps = createRetrofit(getOkHttpsClient(inputStream));
         }
         return retrofitHttps;
+    }
+
+    private Retrofit createRetrofit(OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(FastJsonConverterFactory.create())
+                .build();
     }
 
     private OkHttpClient getOkHttpClient() {
@@ -62,7 +63,14 @@ public enum OkHttpFactory {
     }
 
     private OkHttpClient getOkHttpsClient(InputStream inputStream) throws Exception {
+        return new OkHttpClient.Builder()
+                .addInterceptor(getLoggingInterceptor())
+                .sslSocketFactory(getSocketFactory(inputStream))
+                .hostnameVerifier(new HostVerifier())//验证主机地址
+                .build();
+    }
 
+    private SSLSocketFactory getSocketFactory(InputStream inputStream) throws Exception {
 
         SSLContext sslContext = SSLContext.getInstance("TLS");
 
@@ -86,11 +94,7 @@ public enum OkHttpFactory {
             sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
         }
 
-        return new OkHttpClient.Builder()
-                .addInterceptor(getLoggingInterceptor())
-                .sslSocketFactory(sslContext.getSocketFactory())
-                .hostnameVerifier(new HostVerifier())//验证主机地址
-                .build();
+        return sslContext.getSocketFactory();
     }
 
     private HttpLoggingInterceptor getLoggingInterceptor() {

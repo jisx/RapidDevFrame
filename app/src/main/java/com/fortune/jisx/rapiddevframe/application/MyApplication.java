@@ -1,7 +1,8 @@
 package com.fortune.jisx.rapiddevframe.application;
 
 
-import com.fortune.jisx.model.utils.Constants;
+import com.fortune.jisx.model.util.Constants;
+import com.fortune.jisx.view.util.Utils;
 
 import butterknife.ButterKnife;
 
@@ -18,6 +19,8 @@ public class MyApplication extends BaseApplication {
         mContext = this;
 
         ButterKnife.setDebug(Constants.DEBUG);
+
+        Utils.init(this);
 
     }
 

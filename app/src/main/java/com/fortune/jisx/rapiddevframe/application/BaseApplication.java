@@ -11,33 +11,33 @@ import java.util.Stack;
  */
 public class BaseApplication extends MultiDexApplication {
 
-    private static Stack<Activity> mActivitys;
+    private static Stack<Activity> mActivities;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mActivitys = new Stack<>();
+        mActivities = new Stack<>();
     }
 
     public static void addActivity(Activity activity) {
-        if (mActivitys.contains(activity))
+        if (mActivities.contains(activity))
             return;
-        mActivitys.add(activity);
+        mActivities.add(activity);
     }
 
     public static void removeActivity(Activity activity) {
-        if (mActivitys.isEmpty())
+        if (mActivities.isEmpty())
             return;
-        mActivitys.remove(activity);
+        mActivities.remove(activity);
     }
 
     public static Stack<Activity> getActivityList() {
-       return mActivitys;
+       return mActivities;
     }
 
     public static void finishAll() {
-        while (!mActivitys.isEmpty()) {
-            mActivitys.pop().finish();
+        while (!mActivities.isEmpty()) {
+            mActivities.pop().finish();
         }
     }
 

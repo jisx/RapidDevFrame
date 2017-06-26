@@ -87,11 +87,6 @@ public class DetailsRequest extends OkHttpRequest{
     }
 
     public static void main(String... age) {
-        Log.usePrinter(Log.SYSTEM, true).usePrinter(Log.ANDROID, false);
-        KLog.init(false);
-        KLog.d("test", null);
-        Log.d("adf");
-        Log.d(new TestModel("adfadf"));
     }
 
 }

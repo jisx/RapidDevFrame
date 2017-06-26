@@ -16,29 +16,29 @@ public enum OkHttpService {
 
     private HashMap<Class, Object> httpsServiceMap = new HashMap<>();
 
-    public <T> T  getHttpService(Class<T> serviceClass) {
-        T service = null;
+    public <T> T getHttpService(Class<T> serviceClass) {
+        T callApi;
         if (httpServiceMap.containsKey(serviceClass)
                 && httpServiceMap.get(serviceClass) != null) {
-            service = (T) httpServiceMap.get(serviceClass);
+            callApi = (T) httpServiceMap.get(serviceClass);
         } else {
-            service = OkHttpFactory.INSTANCE.getHttpRetrofit().create(serviceClass);
-            httpServiceMap.put(serviceClass, service);
+            callApi = OkHttpFactory.INSTANCE.getHttpRetrofit().create(serviceClass);
+            httpServiceMap.put(serviceClass, callApi);
         }
-        return service;
+        return callApi;
     }
 
     public <T> T getHttpsService(Class<T> serviceClass, InputStream inputStream) throws Exception {
-        T service = null;
+        T callApi;
         if (httpsServiceMap.containsKey(serviceClass)
                 && httpsServiceMap.get(serviceClass) != null) {
-            service = (T) httpsServiceMap.get(serviceClass);
+            callApi = (T) httpsServiceMap.get(serviceClass);
         } else {
-            service = OkHttpFactory.INSTANCE.getHttpsRetrofit(inputStream).create(serviceClass);
-            httpsServiceMap.put(serviceClass, service);
+            callApi = OkHttpFactory.INSTANCE.getHttpsRetrofit(inputStream).create(serviceClass);
+            httpsServiceMap.put(serviceClass, callApi);
         }
 
-        return service;
+        return callApi;
     }
 
 }

@@ -59,7 +59,7 @@ android {
         }
 
         debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.release
@@ -78,6 +78,7 @@ dependencies {
     compile project(':api')
     compile project(':sql')
 
+    compile 'com.android.support:multidex:1+'
     compile 'com.jakewharton:butterknife:8.+'/*控件注解框架*/
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.+'/*配合控件注解框架*/
 }
