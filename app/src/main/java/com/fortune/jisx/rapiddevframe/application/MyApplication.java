@@ -1,6 +1,10 @@
 package com.fortune.jisx.rapiddevframe.application;
 
 
+import android.util.Log;
+
+import com.fc.jisx.jlog.JBuilder;
+import com.fc.jisx.jlog.JLog;
 import com.fortune.jisx.model.util.Constants;
 import com.fortune.jisx.view.util.Utils;
 

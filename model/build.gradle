@@ -16,6 +16,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.alibaba:fastjson:1.1.58.android'/*json解析*/
-    compile 'co.trikita:log:1.+'
+    compile 'com.jisx.log:JLog:1.0.0'/*日志*/
     compile 'org.greenrobot:eventbus:3.+'/*负责数据传递和通知*/
 }
