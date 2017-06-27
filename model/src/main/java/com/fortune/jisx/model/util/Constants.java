@@ -24,4 +24,9 @@ public class Constants {
      */
     public static final boolean DEBUG = true;
 
+    /**
+     * 数据库名
+     */
+    public static final String DB_NAME = "PROJECT_DB";
+
 }

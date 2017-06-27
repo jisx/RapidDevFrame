@@ -12,10 +12,10 @@ import retrofit2.Response;
 /**
  *
  */
-public class DetailsRequest extends OkHttpRequest{
+public class DownloadRequest extends OkHttpRequest {
 
 
-    private static DetailsRequest INSTANCE;
+    private static DownloadRequest INSTANCE;
 
     private static Call<Void> call;
 
@@ -24,20 +24,20 @@ public class DetailsRequest extends OkHttpRequest{
     /**
      * Request采用单例，并重用
      */
-    private DetailsRequest() {
+    private DownloadRequest() {
     }
 
-    private static DetailsRequest getInstance() {
+    private static DownloadRequest getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new DetailsRequest();
+            INSTANCE = new DownloadRequest();
         }
         return INSTANCE;
     }
 
-    public static DetailsRequest with(EventBus eventBus, String userid) {
+    public static DownloadRequest with(EventBus eventBus, String url) {
         mEventBus = eventBus;
 
-        call = getService(CommonService.class).getOpenIdByCode(userid);
+        call = getService(CommonService.class).downloadFile(url);
 
         return getInstance();
     }
@@ -68,14 +68,14 @@ public class DetailsRequest extends OkHttpRequest{
         }
     }
 
-    private void postEvent(Object object){
-        if(mEventBus != null){
+    private void postEvent(Object object) {
+        if (mEventBus != null) {
             mEventBus.post(object);
         }
     }
 
     public static void main(String... age) {
-        DetailsRequest.with(null,"http://www.baidu.com").doRequest();
+
     }
 
 }

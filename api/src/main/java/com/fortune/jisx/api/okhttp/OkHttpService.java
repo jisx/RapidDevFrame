@@ -1,4 +1,4 @@
-package com.fortune.jisx.api.base;
+package com.fortune.jisx.api.okhttp;
 
 import java.io.InputStream;
 import java.util.HashMap;

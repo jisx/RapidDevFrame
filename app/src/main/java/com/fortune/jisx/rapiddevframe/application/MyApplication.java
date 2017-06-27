@@ -6,6 +6,7 @@ import android.util.Log;
 import com.fc.jisx.jlog.JBuilder;
 import com.fc.jisx.jlog.JLog;
 import com.fortune.jisx.model.util.Constants;
+import com.fortune.jisx.sql.utils.DBManage;
 import com.fortune.jisx.view.util.Utils;
 
 import butterknife.ButterKnife;
@@ -25,6 +26,8 @@ public class MyApplication extends BaseApplication {
         ButterKnife.setDebug(Constants.DEBUG);
 
         Utils.init(this);
+
+        DBManage.open(this);
 
     }
 

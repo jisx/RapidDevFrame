@@ -1,4 +1,4 @@
-package com.fortune.jisx.api.base.parse;
+package com.fortune.jisx.api.okhttp.parse;
 
 import com.alibaba.fastjson.JSON;
 

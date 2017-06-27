@@ -1,8 +1,10 @@
-package com.fortune.jisx.api.base;
+package com.fortune.jisx.api.okhttp;
 
-import com.fortune.jisx.api.base.parse.FastJsonConverterFactory;
+import com.fc.jisx.jlog.JLog;
+import com.fortune.jisx.api.okhttp.parse.FastJsonConverterFactory;
 import com.fortune.jisx.model.util.Constants;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -19,7 +21,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
@@ -57,17 +62,22 @@ public enum OkHttpFactory {
     }
 
     private OkHttpClient getOkHttpClient() {
-        return new OkHttpClient.Builder()
-                .addInterceptor(getLoggingInterceptor())
-                .build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (Constants.DEBUG) {
+            builder.addInterceptor(getLoggingInterceptor());
+        }
+        return builder.build();
     }
 
     private OkHttpClient getOkHttpsClient(InputStream inputStream) throws Exception {
-        return new OkHttpClient.Builder()
-                .addInterceptor(getLoggingInterceptor())
-                .sslSocketFactory(getSocketFactory(inputStream))
-                .hostnameVerifier(new HostVerifier())//验证主机地址
-                .build();
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.sslSocketFactory(getSocketFactory(inputStream))
+                .hostnameVerifier(new HostVerifier());//验证主机地址
+        if (Constants.DEBUG) {
+            builder.addInterceptor(getLoggingInterceptor());
+        }
+        return builder.build();
     }
 
     private SSLSocketFactory getSocketFactory(InputStream inputStream) throws Exception {

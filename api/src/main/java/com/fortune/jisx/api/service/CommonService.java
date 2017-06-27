@@ -1,11 +1,15 @@
 package com.fortune.jisx.api.service;
 
 
-import java.util.Map;
+import com.fortune.jisx.api.okhttp.request.ProgressResponseBody;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.QueryMap;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
@@ -15,6 +19,14 @@ import retrofit2.http.Url;
 public interface CommonService {
 
     @GET
-    Call<Void> getOpenIdByCode(@Url String url, @QueryMap Map<String, Object> map);
+    Call<Void> getOpenIdByCode(@Url String url);
+
+    @Multipart
+    @POST
+    Call<Void> uploadFile(@Url String url, @Part MultipartBody.Part part);
+
+    @Streaming
+    @GET
+    Call<Void> downloadFile(@Url String url);
 
 }
