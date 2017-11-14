@@ -1,10 +1,8 @@
 package com.fortune.jisx.api.okhttp;
 
-import com.fc.jisx.jlog.JLog;
 import com.fortune.jisx.api.okhttp.parse.FastJsonConverterFactory;
 import com.fortune.jisx.model.util.Constants;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -21,10 +19,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 

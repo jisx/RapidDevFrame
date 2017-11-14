@@ -1,8 +1,6 @@
 package com.fortune.jisx.api.service;
 
 
-import com.fortune.jisx.api.okhttp.request.ProgressResponseBody;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.GET;

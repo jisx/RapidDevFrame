@@ -12,7 +12,7 @@ import retrofit2.Response;
 /**
  *
  */
-public class DetailsRequest extends OkHttpRequest{
+public class DetailsRequest extends OkHttpRequest {
 
 
     private static DetailsRequest INSTANCE;
@@ -68,14 +68,14 @@ public class DetailsRequest extends OkHttpRequest{
         }
     }
 
-    private void postEvent(Object object){
-        if(mEventBus != null){
+    private void postEvent(Object object) {
+        if (mEventBus != null) {
             mEventBus.post(object);
         }
     }
 
     public static void main(String... age) {
-        DetailsRequest.with(null,"http://www.baidu.com").doRequest();
+        DetailsRequest.with(null, "http://www.baidu.com").doRequest();
     }
 
 }

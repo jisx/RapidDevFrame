@@ -2,8 +2,8 @@ package com.fortune.jisx.api.request;
 
 import com.fc.jisx.jlog.JLog;
 import com.fortune.jisx.api.okhttp.OkHttpRequest;
-import com.fortune.jisx.api.okhttp.request.UploadProgressListener;
 import com.fortune.jisx.api.okhttp.request.ProgressRequestBody;
+import com.fortune.jisx.api.okhttp.request.UploadProgressListener;
 import com.fortune.jisx.api.service.CommonService;
 
 import org.greenrobot.eventbus.EventBus;

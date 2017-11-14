@@ -1,7 +1,6 @@
 package com.fortune.jisx.rapiddevframe.ui;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.fortune.jisx.rapiddevframe.R;
 import com.fortune.jisx.rapiddevframe.ui.base.BaseAppCompatActivity;

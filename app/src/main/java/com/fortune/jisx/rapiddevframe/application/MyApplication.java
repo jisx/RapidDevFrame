@@ -25,10 +25,9 @@ public class MyApplication extends BaseApplication {
 
         ButterKnife.setDebug(Constants.DEBUG);
 
-        Utils.init(this);
-
         DBManage.open(this);
 
+        Utils.init(this);
     }
 
     public static MyApplication getContext() {

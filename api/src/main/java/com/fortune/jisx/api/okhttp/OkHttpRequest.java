@@ -8,7 +8,7 @@ import java.io.InputStream;
 public abstract class OkHttpRequest {
 
     public static <T> T getService(Class<T> serviceClass) {
-        return OkHttpService.INSTANCE.getHttpService(serviceClass);
+        return getService(serviceClass,false);
     }
 
     public static <T> T getService(Class<T> serviceClass, InputStream inputStream) {
@@ -16,11 +16,7 @@ public abstract class OkHttpRequest {
     }
 
     public static <T> T getService(Class<T> serviceClass, boolean isHttps) {
-        if (isHttps) {
-            return getService(serviceClass, true, null);
-        } else {
-            return getService(serviceClass);
-        }
+        return getService(serviceClass, isHttps, null);
     }
 
     public static <T> T getService(Class<T> serviceClass, boolean isHttps, InputStream inputStream) {
@@ -32,7 +28,7 @@ public abstract class OkHttpRequest {
                 return null;
             }
         } else {
-            return getService(serviceClass);
+            return OkHttpService.INSTANCE.getHttpService(serviceClass);
         }
     }
 

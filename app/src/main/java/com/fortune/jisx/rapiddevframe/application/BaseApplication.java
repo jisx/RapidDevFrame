@@ -32,7 +32,7 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public static Stack<Activity> getActivityList() {
-       return mActivities;
+        return mActivities;
     }
 
     public static void finishAll() {
