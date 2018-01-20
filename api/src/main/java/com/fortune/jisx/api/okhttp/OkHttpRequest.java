@@ -1,5 +1,7 @@
 package com.fortune.jisx.api.okhttp;
 
+import com.fc.jisx.jlog.JLog;
+
 import java.io.InputStream;
 
 /**
@@ -8,7 +10,7 @@ import java.io.InputStream;
 public abstract class OkHttpRequest {
 
     public static <T> T getService(Class<T> serviceClass) {
-        return getService(serviceClass,false);
+        return getService(serviceClass, false);
     }
 
     public static <T> T getService(Class<T> serviceClass, InputStream inputStream) {
@@ -24,7 +26,7 @@ public abstract class OkHttpRequest {
             try {
                 return OkHttpService.INSTANCE.getHttpsService(serviceClass, inputStream);
             } catch (Exception e) {
-                e.printStackTrace();
+                JLog.e(e);
                 return null;
             }
         } else {

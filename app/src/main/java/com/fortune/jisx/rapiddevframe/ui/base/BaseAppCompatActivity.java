@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.fc.jisx.jlog.JLog;
+import com.fortune.jisx.model.util.Constants;
 import com.fortune.jisx.rapiddevframe.application.MyApplication;
+import com.fortune.jisx.rapiddevframe.util.RecordUtils;
+import com.fortune.jisx.sql.utils.DBManage;
+import com.fortune.jisx.view.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -96,6 +101,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Throwable throwable) {
+        JLog.e(throwable);
+        //异常保存到数据库
+        RecordUtils.saveLog(throwable.getClass().getName(), throwable.getMessage());
 
     }
 

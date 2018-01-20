@@ -6,6 +6,8 @@ import com.fortune.jisx.model.util.Constants;
 import com.fortune.jisx.sql.greendao.DaoMaster;
 import com.fortune.jisx.sql.greendao.DaoSession;
 import com.fortune.jisx.sql.greendao.DownloadEntityDao;
+import com.fortune.jisx.sql.greendao.LogEntityDao;
+import com.fortune.jisx.sql.greendao.OperateEntityDao;
 
 /**
  * Created by jisx on 2016/8/15.
@@ -57,8 +59,16 @@ public class DBManage {
         return daoSession;
     }
 
-    public static DownloadEntityDao getDownloadEntityDao() {
+    public static DownloadEntityDao getDownloadDao() {
         return getSession().getDownloadEntityDao();
+    }
+
+    public static LogEntityDao getLogDao() {
+        return getSession().getLogEntityDao();
+    }
+
+    public static OperateEntityDao getOperateDao() {
+        return getSession().getOperateEntityDao();
     }
 
 }

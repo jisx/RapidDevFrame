@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fc.jisx.jlog.JLog;
+import com.fortune.jisx.model.util.Constants;
+import com.fortune.jisx.rapiddevframe.util.RecordUtils;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -100,7 +104,9 @@ public abstract class BaseFragment extends Fragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Throwable throwable) {
-
+        //异常保存到数据库
+        JLog.e(throwable);
+        RecordUtils.saveLog(throwable.getClass().getName(), throwable.getMessage());
     }
 
     public abstract int setContentView();

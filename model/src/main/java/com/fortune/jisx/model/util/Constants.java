@@ -29,4 +29,9 @@ public class Constants {
      */
     public static final String DB_NAME = "PROJECT_DB";
 
+    /**
+     * 数据库名
+     */
+    public static final String LogPath = "/Inspection/Log/";
+
 }

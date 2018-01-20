@@ -25,5 +25,5 @@ greendao {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':model')
-    compile 'org.greenrobot:greendao:3.+'
+    compile 'org.greenrobot:greendao:3.2.2'
 }

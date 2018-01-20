@@ -1,20 +1,20 @@
 package com.fortune.jisx.api.okhttp;
 
-import com.fortune.jisx.api.okhttp.parse.FastJsonConverterFactory;
+import com.fortune.jisx.api.okhttp.parse.EnumTypeAdapterFactory;
 import com.fortune.jisx.model.util.Constants;
+import com.google.gson.GsonBuilder;
 
 import java.io.InputStream;
 import java.security.KeyStore;
-import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -22,6 +22,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by jisx on 2017/6/20.
@@ -49,10 +50,13 @@ public enum OkHttpFactory {
     }
 
     private Retrofit createRetrofit(OkHttpClient okHttpClient) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapterFactory(new EnumTypeAdapterFactory());
+
         return new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(FastJsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gsonBuilder.create()))
                 .build();
     }
 
@@ -66,40 +70,40 @@ public enum OkHttpFactory {
 
     private OkHttpClient getOkHttpsClient(InputStream inputStream) throws Exception {
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.sslSocketFactory(getSocketFactory(inputStream))
-                .hostnameVerifier(new HostVerifier());//验证主机地址
-        if (Constants.DEBUG) {
-            builder.addInterceptor(getLoggingInterceptor());
-        }
-        return builder.build();
-    }
+        KeyStore keyStore = null;
 
-    private SSLSocketFactory getSocketFactory(InputStream inputStream) throws Exception {
-
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-
-        if (inputStream == null) {
-            sslContext.init(null, new TrustManager[]{new MyTrustManager()}, new SecureRandom());
-        } else {
-            /* 提供证书的情况下 */
+        if (inputStream != null) {
+            //提供证书的情况下
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             Certificate certificate = certificateFactory.generateCertificate(inputStream);
 
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null);
             keyStore.setCertificateEntry("trust", certificate);
 
             inputStream.close();
-
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory
-                    .getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(keyStore);
-
-            sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
         }
 
-        return sslContext.getSocketFactory();
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
+
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+            throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
+        }
+
+        X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+        sslContext.init(null, new TrustManager[]{trustManager}, null);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+
+        if (Constants.DEBUG) {
+            builder.addInterceptor(getLoggingInterceptor());
+        }
+        return builder.build();
     }
 
     private HttpLoggingInterceptor getLoggingInterceptor() {

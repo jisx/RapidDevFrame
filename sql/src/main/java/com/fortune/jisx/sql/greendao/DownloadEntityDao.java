@@ -13,7 +13,7 @@ import org.greenrobot.greendao.database.DatabaseStatement;
 /** 
  * DAO for table "DOWNLOAD_ENTITY".
 */
-public class DownloadEntityDao extends AbstractDao<DownloadEntity, Void> {
+public class DownloadEntityDao extends AbstractDao<DownloadEntity, Long> {
 
     public static final String TABLENAME = "DOWNLOAD_ENTITY";
 
@@ -22,7 +22,7 @@ public class DownloadEntityDao extends AbstractDao<DownloadEntity, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", false, "ID");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Url = new Property(1, String.class, "url", false, "URL");
         public final static Property ReadLength = new Property(2, Long.class, "readLength", false, "READ_LENGTH");
         public final static Property TotalLength = new Property(3, Long.class, "TotalLength", false, "TOTAL_LENGTH");
@@ -42,7 +42,7 @@ public class DownloadEntityDao extends AbstractDao<DownloadEntity, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DOWNLOAD_ENTITY\" (" + //
-                "\"ID\" INTEGER," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"URL\" TEXT," + // 1: url
                 "\"READ_LENGTH\" INTEGER," + // 2: readLength
                 "\"TOTAL_LENGTH\" INTEGER," + // 3: TotalLength
@@ -116,8 +116,8 @@ public class DownloadEntityDao extends AbstractDao<DownloadEntity, Void> {
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
@@ -142,20 +142,23 @@ public class DownloadEntityDao extends AbstractDao<DownloadEntity, Void> {
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(DownloadEntity entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(DownloadEntity entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(DownloadEntity entity) {
-        return null;
+    public Long getKey(DownloadEntity entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(DownloadEntity entity) {
-        // TODO
-        return false;
+        return entity.getId() != null;
     }
 
     @Override

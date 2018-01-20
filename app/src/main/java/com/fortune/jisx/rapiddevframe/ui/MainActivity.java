@@ -2,6 +2,8 @@ package com.fortune.jisx.rapiddevframe.ui;
 
 import android.os.Bundle;
 
+import com.fc.jisx.jlog.JLog;
+import com.fortune.jisx.rapiddevframe.BuildConfig;
 import com.fortune.jisx.rapiddevframe.R;
 import com.fortune.jisx.rapiddevframe.ui.base.BaseAppCompatActivity;
 import com.fortune.jisx.view.util.ToastUtil;
@@ -15,7 +17,6 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -30,7 +31,6 @@ public class MainActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.tv_toast_long)
     public void onMTvToastLongClicked() {
-
-        ToastUtil.showLong("测试机");
+        JLog.d("tests");
     }
 }

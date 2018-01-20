@@ -1,6 +1,8 @@
 package com.fortune.jisx.rapiddevframe.application;
 
 import android.app.Activity;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import java.util.Stack;
@@ -47,5 +49,11 @@ public class BaseApplication extends MultiDexApplication {
     public static void exit() {
         finishAll();
         android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

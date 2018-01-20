@@ -88,7 +88,7 @@ public class UploadRequest extends OkHttpRequest {
         ProgressRequestBody uploadProgressRequest = new ProgressRequestBody(requestBody, new UploadProgressListener() {
             @Override
             public void onProgress(long bytesWritten, long contentLength, boolean hasFinish) {
-                JLog.TEXT.w((int) (bytesWritten * 1.0 / contentLength * 100) + "%");
+                JLog.w((int) (bytesWritten * 1.0 / contentLength * 100) + "%");
             }
         });
 
