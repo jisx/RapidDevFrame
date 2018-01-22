@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
 
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -12,6 +16,12 @@ android {
     }
 
     signingConfigs {
+        debug {
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+        }
         release {
             keyAlias RELEASE_KEY_ALIAS
             keyPassword RELEASE_KEY_PASSWORD
@@ -35,20 +45,8 @@ android {
 
     /*渠道配置*/
     productFlavors {
-        dev {
-            applicationId APPLICATION_ID
-            // 动态修改 常量 字段
-            buildConfigField "String", "ENVIRONMENT", '"dev"'
-        }
-        stage {
-            applicationId APPLICATION_ID
-            // 动态修改 常量 字段
-            buildConfigField "String", "ENVIRONMENT", '"stage"'
-        }
         prod {
             applicationId APPLICATION_ID
-            // 动态修改 常量 字段
-            buildConfigField "String", "ENVIRONMENT", '"prod"'
         }
     }
 
@@ -59,8 +57,7 @@ android {
     buildTypes {
         release {
             buildConfigField "String", "HOST", DEBUG_HOST
-            //移除无用的resource文件
-            shrinkResources true
+            buildConfigField("boolean", "IS_DEBUG", "false")
             //Zipalign优化
             zipAlignEnabled true
 
@@ -69,6 +66,7 @@ android {
 
             applicationIdSuffix ".release"
             minifyEnabled true
+            shrinkResources = false
             debuggable false
             //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -78,7 +76,7 @@ android {
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // 输出apk名称为pcbwx_v1.0_wandou.apk
-                        def fileName = "frame_${defaultConfig.versionName}_${variant.productFlavors[0].name}_${releaseTime()}.apk"
+                        def fileName = "${variant.buildType.name}-V${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
                 }
@@ -87,13 +85,16 @@ android {
 
         debug {
             buildConfigField "String", "HOST", RELEASE_HOST
+            buildConfigField("boolean", "IS_DEBUG", "true")
 
+            versionNameSuffix "-debug"
             //签名
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
 
             applicationIdSuffix ".debug"
             minifyEnabled false
-            debuggable true
+            shrinkResources false
+            zipAlignEnabled false
         }
     }
 
@@ -113,10 +114,6 @@ android {
     }
 }
 
-def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':view')
@@ -125,8 +122,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.jakewharton:butterknife:8.8.1'
     /*控件注解框架*/
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    /*配合控件注解框架*/
     // 崩溃日志捕获
     compile 'ch.acra:acra:4.9.2'
 }

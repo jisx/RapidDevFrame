@@ -8,6 +8,7 @@ import com.fc.jisx.jlog.JLogLevel;
 import com.fc.jisx.jlog.LogConfiguration;
 import com.fc.jisx.jlog.printer.config.FileConfig;
 import com.fortune.jisx.model.util.Constants;
+import com.fortune.jisx.rapiddevframe.BuildConfig;
 import com.fortune.jisx.rapiddevframe.R;
 import com.fortune.jisx.rapiddevframe.util.SDCardUtils;
 import com.fortune.jisx.sql.utils.DBManage;
@@ -49,13 +50,16 @@ public class MyApplication extends BaseApplication {
         super.onCreate();
         mContext = this;
 
+        initLog();
+
+        Constants.DEBUG = BuildConfig.IS_DEBUG;
+
         ButterKnife.setDebug(Constants.DEBUG);
 
         DBManage.open(this);
 
         Utils.init(this);
 
-        initLog();
     }
 
     private void initLog() {
@@ -65,7 +69,7 @@ public class MyApplication extends BaseApplication {
                 .track()
                 .logLevel(JLogLevel.DEBUG.getLevel())
                 .file(new FileConfig(SDCardUtils.getSDPath() + Constants.LogPath,
-                        14, 20 * 1025 * 1024,
+                        14, 20 * 1024 * 1024,
                         JLogLevel.WARN)).build());
 
     }

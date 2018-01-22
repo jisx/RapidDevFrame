@@ -1,5 +1,8 @@
 package com.fortune.jisx.model.util;
 
+
+import com.fortune.jisx.model.BuildConfig;
+
 /**
  * Created by jsx on 2016/4/5.
  */
@@ -22,7 +25,7 @@ public class Constants {
     /**
      * 是否开启debug模式
      */
-    public static final boolean DEBUG = true;
+    public static boolean DEBUG;
 
     /**
      * 数据库名
