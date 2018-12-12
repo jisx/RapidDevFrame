@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--#8280ff-->
+    <color name="blue_light">#8280FF</color>
+    <color name="blue_background">#A59BF5</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="black_text">#525252</color>
+    <color name="black_background">#333333</color>
+    <!--页面灰色背景颜色-->
+    <color name="gray_background">#F8FAFB</color>
+    <!--下划线颜色-->
+    <color name="gray_line">#D4D4D4</color>
+    <!--分割线颜色-->
+    <color name="gray_segment">#ECECEC</color>
+    <!--深灰色字体颜色-->
+    <color name="gray_dark">#B8B8B8</color>
+    <!--EditText中提示语的字体颜色-->
+    <color name="gray_hint">#999999</color>
+    <!--灰色字体颜色-->
+    <color name="gray_text">#CCCCCC</color>
+    <!--灰色字体颜色-->
+    <color name="gray_button">#F7F7F7</color>
+    <!--红色警告文字-->
+    <color name="red_warn">#EE5A5A</color>
+    <!--浅红色背景-->
+    <color name="red_light">#D98181</color>
+    <!--浅绿色-->
+    <color name="green_light">#B0DDAF</color>
+</resources>

@@ -4,17 +4,59 @@ def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
+def getConfigs(environment,fileName) {
+    //断言变量不为空
+    assert environment !=null
+    assert fileName !=null
+    Properties props = new Properties()
+    //加载文件内容为 Properties，方便使用
+    props.load(new FileInputStream(file("config/$environment/$fileName")))
+    return props
+}
+
+def valueType(value){
+    if(value.class == Integer){
+        return "Integer"
+    }else{
+        return "String"
+    }
+}
+
 android {
 
     compileSdkVersion COMPILE_SDK_VERSION as int
     buildToolsVersion BUILD_TOOLS_VERSION
 
-    packagingOptions {
-        exclude '*.apk'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
+    /*默认配置*/
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
+
+        applicationId APPLICATION_ID
+        multiDexEnabled true
     }
 
+    /*渠道配置--理解为维度*/
+    flavorDimensions "channel"
+
+    productFlavors {
+        /*应用宝*/
+        tencent {
+            dimension "channel"
+        }
+    }
+
+    productFlavors.all {
+        flavor ->
+            def props = getConfigs(name,'config.properties')
+            props.propertyNames().each { name ->
+                buildConfigField valueType(props.getProperty(name.toString())), name, props.getProperty(name.toString())
+            }
+    }
+
+    /*签名配置*/
     signingConfigs {
         debug {
             keyAlias RELEASE_KEY_ALIAS
@@ -30,72 +72,47 @@ android {
         }
     }
 
-    defaultConfig {
-//        applicationId APPLICATION_ID
-        minSdkVersion MIN_SDK_VERSION as int
-        targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
-
-        multiDexEnabled true
-        jackOptions {
-            enabled true
-        }
-    }
-
-    /*渠道配置*/
-    productFlavors {
-        prod {
-            applicationId APPLICATION_ID
-        }
-    }
-
-    productFlavors.all {
-
-    }
-
     buildTypes {
         release {
-            buildConfigField "String", "HOST", DEBUG_HOST
-            buildConfigField("boolean", "IS_DEBUG", "false")
+            //Zipalign优化
+            //是否混淆
+            minifyEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             //Zipalign优化
             zipAlignEnabled true
-
+            //关闭动态调试
+            debuggable false
             //签名
             signingConfig signingConfigs.release
-
-            applicationIdSuffix ".release"
-            minifyEnabled true
-            shrinkResources = false
-            debuggable false
-            //混淆文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            // 自定义输出配置
+            // 输出配置
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // 输出apk名称为pcbwx_v1.0_wandou.apk
-                        def fileName = "${variant.buildType.name}-V${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
+                variant.outputs.all { output ->
+                    outputFileName = "${variant.buildType.name}-V${defaultConfig.versionName}_${releaseTime()}.apk"
                 }
             }
         }
 
         debug {
-            buildConfigField "String", "HOST", RELEASE_HOST
-            buildConfigField("boolean", "IS_DEBUG", "true")
-
             versionNameSuffix "-debug"
+            //是否混淆
+            minifyEnabled false
+            //移除无用的resource文件
+            shrinkResources false
+            //Zipalign优化
+            zipAlignEnabled false
+            //动态调试
+            debuggable true
             //签名
             signingConfig signingConfigs.debug
-
-            applicationIdSuffix ".debug"
-            minifyEnabled false
-            shrinkResources false
-            zipAlignEnabled false
         }
+    }
+
+    packagingOptions {
+        exclude '*.apk'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
     }
 
     /*忽略编译过程中的lint报错*/
@@ -114,16 +131,15 @@ android {
     }
 }
 
+def multidexVersion = '1.0.3'
+def butterknifeVersion = '9.0.0-rc2'
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':view')
-    compile project(':api')
-    compile project(':sql')
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.jakewharton:butterknife:8.8.1'
-    /*控件注解框架*/
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    // 崩溃日志捕获
-    compile 'ch.acra:acra:4.9.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':view')
+
+    implementation "com.android.support:multidex:$multidexVersion"
+    /*view注解*/
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
 }
