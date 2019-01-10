@@ -1,28 +1,24 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.greenrobot.greendao'
 
 android {
 
-    compileSdkVersion COMPILE_SDK_VERSION as int
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
 
+    /*默认配置*/
     defaultConfig {
-        minSdkVersion MIN_SDK_VERSION as int
-        targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
+        minSdkVersion rootProject.ext.MIN_SDK_VERSION
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+        versionName rootProject.ext.VERSION_NAME
+        versionCode rootProject.ext.VERSION_CODE
     }
-}
-
-greendao {
-    schemaVersion 1//数据库版本号
-    daoPackage 'com.rapid.sql.greendao'//设置DaoMaster、DaoSession、Dao包名
-    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
-    //targetGenDirTest：设置生成单元测试目录
-    //generateTests：设置自动生成单元测试用例
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':base')
-    api 'org.greenrobot:greendao:3.2.2'
+
+    debugImplementation "io.objectbox:objectbox-android-objectbrowser:$OBJECTBOX_VERSION"
+    releaseImplementation "io.objectbox:objectbox-android:$OBJECTBOX_VERSION"
 }
+
+apply plugin: 'io.objectbox'//这里必须放到最下面，好坑啊！！！

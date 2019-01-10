@@ -1,7 +1,7 @@
 package com.rapid.frame.adapter.base;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by jisx on 2016/7/8.

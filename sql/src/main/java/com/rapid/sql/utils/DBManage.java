@@ -2,59 +2,49 @@ package com.rapid.sql.utils;
 
 import android.content.Context;
 
-import com.rapid.base.util.Constants;
-import com.rapid.sql.greendao.DaoMaster;
-import com.rapid.sql.greendao.DaoSession;
+import com.rapid.sql.greendao.MyObjectBox;
+
+import io.objectbox.Box;
+import io.objectbox.BoxStore;
 
 
 /**
  * Created by jisx on 2016/8/15.
  */
-public class DBManage {
+public enum DBManage {
 
+    INSTANCE {
 
-    static DaoMaster.DevOpenHelper helper;
+        BoxStore mBoxStore;
+        Context mContext;
 
-    static DaoSession daoSession;
-
-    static Context mContext;
-
-
-    public static DaoMaster.DevOpenHelper open(Context context) {
-        mContext = context;
-        helper = new DaoMaster.DevOpenHelper(context, Constants.DB_NAME, null);
-        daoSession = new DaoMaster(helper.getWritableDatabase()).newSession();
-        return helper;
-    }
-
-    public static boolean isOpen() {
-        if (mContext == null || helper == null || helper.getWritableDatabase() == null || daoSession == null) {
-            return false;
+        @Override
+        public void init(Context context) {
+            this.mContext = context;
+            mBoxStore = MyObjectBox.builder().androidContext(context).build();
         }
 
-        return true;
-    }
-
-    public static void clear() {
-        if (daoSession != null) {
-            daoSession.clear();
+        @Override
+        public <T> Box<T> getSession(Class<T> tClass) {
+            if(mContext == null){
+                throw new NullPointerException("DBManage must init");
+            }
+            return mBoxStore.boxFor(tClass);
         }
-    }
 
-    public static void close() {
-        if (helper != null) {
-            helper.close();
-            helper = null;
-        }
-    }
 
-    public static DaoSession getSession() {
-        if (daoSession == null) {
-            if (mContext != null) {
-                open(mContext);
+        @Override
+        public void close() {
+            if (mBoxStore != null) {
+                mBoxStore.close();
+                mBoxStore = null;
             }
         }
-        return daoSession;
-    }
+    };
 
+    public abstract void init(Context context);
+
+    public abstract <T> Box<T> getSession(Class<T> tClass);
+
+    public abstract void close();
 }

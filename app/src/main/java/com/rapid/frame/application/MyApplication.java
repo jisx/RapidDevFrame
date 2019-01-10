@@ -17,8 +17,6 @@ import butterknife.ButterKnife;
 /**
  * Created by jisx on 2016/7/7.
  */
-//@AcraHttpSender(uri = "https://yourdomain.com/acra/report",
-//        httpMethod = HttpSender.Method.POST)
 public class MyApplication extends BaseApplication {
 
     private static MyApplication mContext;
@@ -26,10 +24,8 @@ public class MyApplication extends BaseApplication {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-//        ACRA.init(this);
 
     }
-
 
     public void onCreate() {
         super.onCreate();
@@ -44,7 +40,7 @@ public class MyApplication extends BaseApplication {
 
         ButterKnife.setDebug(Constants.DEBUG);
 
-        DBManage.open(this);
+        DBManage.INSTANCE.init(this);
     }
 
     private void initLog() {
@@ -66,7 +62,7 @@ public class MyApplication extends BaseApplication {
     public void onTerminate() {
         // 程序终止的时候执行
         super.onTerminate();
-        DBManage.close();
+        DBManage.INSTANCE.close();
     }
 
 }

@@ -2,7 +2,7 @@ package com.rapid.frame.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.rapid.base.util.ThrowableUtils;
 import com.rapid.base.util.ToastUtils;

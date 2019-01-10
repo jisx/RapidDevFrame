@@ -2,10 +2,11 @@ package com.rapid.frame.application;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
 import java.util.Stack;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 
 /**

@@ -4,37 +4,37 @@ def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-def getConfigs(environment,fileName) {
+def getConfigs(environment, fileName) {
     //断言变量不为空
-    assert environment !=null
-    assert fileName !=null
+    assert environment != null
+    assert fileName != null
     Properties props = new Properties()
     //加载文件内容为 Properties，方便使用
     props.load(new FileInputStream(file("config/$environment/$fileName")))
     return props
 }
 
-def valueType(value){
-    if(value.class == Integer){
+def valueType(value) {
+    if (value.class == Integer) {
         return "Integer"
-    }else{
+    } else {
         return "String"
     }
 }
 
 android {
 
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
 
     /*默认配置*/
     defaultConfig {
-        minSdkVersion MIN_SDK_VERSION as int
-        targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
+        minSdkVersion rootProject.ext.MIN_SDK_VERSION
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+        versionName rootProject.ext.VERSION_NAME
+        versionCode rootProject.ext.VERSION_CODE
 
-        applicationId APPLICATION_ID
+        applicationId rootProject.ext.APPLICATION_ID
         multiDexEnabled true
     }
 
@@ -50,7 +50,7 @@ android {
 
     productFlavors.all {
         flavor ->
-            def props = getConfigs(name,'config.properties')
+            def props = getConfigs(name, 'config.properties')
             props.propertyNames().each { name ->
                 buildConfigField valueType(props.getProperty(name.toString())), name, props.getProperty(name.toString())
             }
@@ -59,16 +59,16 @@ android {
     /*签名配置*/
     signingConfigs {
         debug {
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
+            keyAlias rootProject.RELEASE_KEY_ALIAS
+            keyPassword rootProject.RELEASE_KEY_PASSWORD
+            storeFile file(rootProject.RELEASE_STORE_FILE)
+            storePassword rootProject.RELEASE_STORE_PASSWORD
         }
         release {
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
+            keyAlias rootProject.RELEASE_KEY_ALIAS
+            keyPassword rootProject.RELEASE_KEY_PASSWORD
+            storeFile file(rootProject.RELEASE_STORE_FILE)
+            storePassword rootProject.RELEASE_STORE_PASSWORD
         }
     }
 
@@ -131,15 +131,11 @@ android {
     }
 }
 
-def multidexVersion = '1.0.3'
-def butterknifeVersion = '9.0.0-rc2'
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':view')
 
-    implementation "com.android.support:multidex:$multidexVersion"
-    /*view注解*/
-    implementation "com.jakewharton:butterknife:$butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE_VERSION"
 
 }
