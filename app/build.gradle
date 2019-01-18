@@ -24,17 +24,17 @@ def valueType(value) {
 
 android {
 
-    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
-    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     /*默认配置*/
     defaultConfig {
-        minSdkVersion rootProject.ext.MIN_SDK_VERSION
-        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
-        versionName rootProject.ext.VERSION_NAME
-        versionCode rootProject.ext.VERSION_CODE
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionName rootProject.ext.versionName
+        versionCode rootProject.ext.versionCode
 
-        applicationId rootProject.ext.APPLICATION_ID
+        applicationId rootProject.ext.applicationId
         multiDexEnabled true
     }
 
@@ -135,7 +135,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':view')
 
-    implementation "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$BUTTER_KNIFE_VERSION"
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
 
 }

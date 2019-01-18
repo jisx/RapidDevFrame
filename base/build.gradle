@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     /*默认配置*/
     defaultConfig {
-        minSdkVersion rootProject.ext.MIN_SDK_VERSION
-        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
-        versionName rootProject.ext.VERSION_NAME
-        versionCode rootProject.ext.VERSION_CODE
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionName rootProject.ext.versionName
+        versionCode rootProject.ext.versionCode
     }
 
     buildTypes {
@@ -22,29 +22,29 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
 
-    api "androidx.multidex:multidex:$MULTIDEX_VERSION"
-    api "com.google.android.material:material:$ANDROIDX_LIBARAY_VERSION"
+    api "androidx.multidex:multidex:$multidexVersion"
+    api "com.google.android.material:material:$androidxLibarayVersion"
 
-    api "androidx.core:core:$ANDROIDX_LIBARAY_VERSION"
-    api "androidx.appcompat:appcompat:$ANDROIDX_LIBARAY_VERSION"
-    api "androidx.recyclerview:recyclerview:$ANDROIDX_LIBARAY_VERSION"
-    api "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBARAY_VERSION"
-    api "androidx.appcompat:appcompat:$ANDROIDX_LIBARAY_VERSION"
-    api "androidx.constraintlayout:constraintlayout:$ANDROIDX_LIBARAY_CONSTRAINTLAYOUT_VERSION"
+    api "androidx.core:core:$androidxLibarayVersion"
+    api "androidx.appcompat:appcompat:$androidxLibarayVersion"
+    api "androidx.recyclerview:recyclerview:$androidxLibarayVersion"
+    api "androidx.legacy:legacy-support-v4:$androidxLibarayVersion"
+    api "androidx.appcompat:appcompat:$androidxLibarayVersion"
+    api "androidx.constraintlayout:constraintlayout:$androidxLibarayConstraintlayoutVersion"
 
-    api "pub.devrel:easypermissions:$EASY_PERMISSIONS_VERSION"
+    api "pub.devrel:easypermissions:$easyPermissionsVersion"
 
 
-    api "com.jisx.log:JLog:$LOG_VERSION"
+    api "com.jisx.log:JLog:$logVersion"
 
-    api "com.google.code.gson:gson:$GSON_VERSION"
+    api "com.google.code.gson:gson:$gsonVersion"
 
-    api "org.greenrobot:eventbus:$EVENT_BUS_VERSION"
+    api "org.greenrobot:eventbus:$eventBusVersion"
 
-    api "com.github.bumptech.glide:glide:$GLIDE_VERSION"
-    api ("com.github.bumptech.glide:okhttp3-integration:$GLIDE_VERSION"){
+    api "com.github.bumptech.glide:glide:$glideVersion"
+    api ("com.github.bumptech.glide:okhttp3-integration:$glideVersion"){
         exclude module: 'okio'
         exclude module: 'okhttp'
     }
-    annotationProcessor "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
 }

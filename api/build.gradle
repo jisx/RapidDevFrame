@@ -2,14 +2,14 @@ apply plugin: 'com.android.library'
 
 android {
 
-    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     /*默认配置*/
     defaultConfig {
-        minSdkVersion rootProject.ext.MIN_SDK_VERSION
-        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
-        versionName rootProject.ext.VERSION_NAME
-        versionCode rootProject.ext.VERSION_CODE
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionName rootProject.ext.versionName
+        versionCode rootProject.ext.versionCode
     }
 
     buildTypes {
@@ -24,7 +24,7 @@ dependencies {
 
     api project(':sql')
 
-    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-    implementation "com.squareup.okhttp3:logging-interceptor:$OKHTTP3_VERSION"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3Version"
 }
